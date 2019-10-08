@@ -1,14 +1,17 @@
 window.addEventListener('load', ()=> {
     let lon;
     let lat;
-    let temperatureDescription = document.querySelector(".temperature-description");
-    let temperatureDegree = document.querySelector(".temperature-degree");
-    let locationTimeZone = document.querySelector(".location-timezone");
-    let weatherIcon = document.querySelector(".weather-icon");
-    let temperatureSection = document.querySelector(".temperature");
-    const temperatureSpan = document.querySelector(".temperature span");
+    let descriptionSelector = document.querySelector(".description");
+    let temperatureSelector = document.querySelector(".temperature");
+    let locationSelector = document.querySelector(".location");
 
 
+    let week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let date = new Date();
+    let currentDay = date.getDay();
+
+
+    /* Users Location */
     if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
     } else {
@@ -19,15 +22,13 @@ window.addEventListener('load', ()=> {
         lon = position.coords.longitude;
         lat = position.coords.latitude;
 
-        const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=60d1fe7b8d05e121e8fa735c8b7e2f6d`;
+        const api = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=e0befcd35dd548888966eebc1dd8f0da`;
 
         fetch(api)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                const { temp } = data.main;
-                const { description, icon } = data.weather[0];
 
                 temperatureDegree.textContent = temp;
                 temperatureDescription.textContent = description;
@@ -37,18 +38,23 @@ window.addEventListener('load', ()=> {
                 let celcius = Math.round((temp - 273.15) * 100) / 100;
                 let fahrenheit = Math.round((temp * 9/5 - 459.67) * 100) / 100;
 
-                temperatureSection.addEventListener('click', () => {
-                    if (temperatureSpan.textContent === "F") {
-                        temperatureSpan.textContent = "C";
-                        temperatureDegree.textContent = celcius;
-                    } else if (temperatureSpan.textContent === "C") {
-                        temperatureSpan.textContent = "K";
-                        temperatureDegree.textContent = temp;
-                    } else {
-                        temperatureSpan.textContent = "F";
-                        temperatureDegree.textContent = fahrenheit;
-                    }
-                })
+
+                /* Five Days Forecast */
+                /* Get temp for the next five days */
+                var i = 1;
+                temp.forEach(function(element) {
+                    element.textContent = Math.round(data.data[i++].temp) + "°";
+                });
+
+
+                /* Get current and four upcoming days */
+                i = currentDay;
+                day.forEach(function(element) {
+                    element.textContent = week[i++%7];
+                });
+
+                
+
             });
     }
 
@@ -68,4 +74,10 @@ window.addEventListener('load', ()=> {
                 break;
         }
     }
+
+    
+    /* Elements clicked */
+    document.getElementById("settings-btn").addEventListener('click', function() {
+        document.querySelector(".settings").classList.toggle("enable");
+    });
 });
