@@ -4,36 +4,166 @@
     box-sizing: border-box;
 }
 
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(rgb(47,150,163), rgb(48,62,143));
-    font-family: sans-serif;
-    color: white;
+ul {
+    list-style-type: none;
 }
 
-.location {
-    height: 30vh;
-    width: 50%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.degree-section {
-    display: flex;
-    align-items: center;
+button {
+    background-color: white;
+    border: none;
     cursor: pointer;
 }
 
-.degree-section span {
-    margin: 10px;
-    font-size: 30px;
+html, body {
+    font-family: 'Nunito', sans-serif;
+    color: white;
+
+    height: 100%;
+    min-height: 900px;
+    max-height: 1200px;
 }
 
-.degree-section h2 {
-    font-size: 40px;
+body {
+    position: relative;
+    background: rgb(255, 216, 190);
+}
+
+
+/* Settings */
+#settings-btn {
+    position: relative;
+    top: 5%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.settings {
+    display: none;
+    grid-template-rows: 25% 75%;
+    place-items: center;
+
+    position: relative;
+    top: 5%;
+    left: 63%;
+    z-index: 5;
+
+    width: 250px;
+    height: 400px;
+    background-color: rgb(255, 216, 190);
+    box-shadow: 0 0 100px rgba(141, 64, 12, 0.2);
+}
+
+.enable {
+    display: grid;
+}
+
+#scale {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 5px;
+
+    width: 80%;
+}
+
+#scale button {
+    background-color: rgb(255, 188, 140);
+    border-radius: 5px;
+    color: white;
+}
+
+#backgrounds {
+    display: grid;
+    align-items: center;
+    
+    width: 80%;
+    height: 90%;
+}
+
+#backgrounds div {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#backgrounds div span {
+    justify-self: start;
+}
+
+#backgrounds div img {
+    justify-self: end;
+
+    width: 50px;
+    height: 25px;
+}
+
+
+.forecast {
+    display: grid;
+    place-items: center;
+
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.description {
+    font-size: 2.4rem;
+    font-weight: 500;
+}
+
+.location {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.temperature {
+    font-size: 4.5rem;
+    font-weight: 900;
+}
+
+
+/* Five Days Forecast */
+
+.five-day-forecast {
+    position: absolute;
+    bottom: -7%;;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 1.1rem;
+}
+
+.five-day-forecast ul {
+    width: 30vw;
+}
+
+.five-day-forecast ul li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+
+    height: 60px;
+}
+
+.five-day-forecast ul li:hover {
+    background-color: rgba(0, 0, 0, 0.2)
+}
+
+.five-day-forecast ul li div {
+    justify-self: right;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+
+    width: 30%;
+}
+
+.five-day-forecast ul li div img {
+    width: 30px;
+    height: 30px;
 }

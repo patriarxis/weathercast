@@ -5,24 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="./style.css" />
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet"> 
+
+    <!-- Javascript -->
     <script src="app.js"></script>
 
     <title>Weather</title>
 </head>
 <body>
 
-    <div class="location">
-        <h1 class="location-timezone">Timezone</h1>
-        <img class="weather-icon"></img>
-    </div>
-    <div class="temperature">
-        <div class="degree-section">
-            <h2 class="temperature-degree">34</h2>
-            <span>K</span>
+    <img id="settings-btn" src="" alt="">
+
+    <div class="settings">
+        <div id="scale">
+            <span>Scale</span>
+            <button id="celcius" class="active">°C</button>
+            <button id="fhrenheit">°F</button>
+            <button id="kelvin">K</button>
         </div>
-        <div class="temperature-description">Its friggin cold</div>
+        
+        <div id="backgrounds">
+            <span>Backgrounds</span>
+            <div>
+                <span>Clear</span>
+                <img src="img/Weather Forecast App UI.jpg" alt="">
+            </div>
+            <div>
+                <span>Clouds</span>
+                <img src="img/Weather Forecast App UI.jpg" alt="">
+            </div>
+            <div>
+                <span>Rain</span>
+                <img src="img/Weather Forecast App UI.jpg" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="forecast">
+        <h2 class="description">-</h2>
+        <h1 class="location">-</h1>
+        <h2 class="temperature">--</h2>
+    </div>
+
+    <div class="five-day-forecast">
+        <ul>
+            <li>
+                <span class="day">Monday</span>
+                <div>
+                    <span class="temp">26°</span>
+                    <img src="img/sun.svg" alt="" class="weather-img">
+                </div>
+            </li>
+            <li>
+                <span class="day">Tuesday</span>
+                <div>
+                    <span class="temp">26°</span>
+                    <img src="img/sun.svg" alt="" class="weather-img">
+                </div>
+            </li>
+            <li>
+                <span class="day">Wednsday</span>
+                <div>
+                    <span class="temp">26°</span>
+                    <img src="img/sun.svg" alt="" class="weather-img">
+                </div>
+            </li>
+            <li>
+                <span class="day">Thursday</span>
+                <div>
+                    <span class="temp">26°</span>
+                    <img src="img/sun.svg" alt="" class="weather-img">
+                </div>
+            </li>
+            <li>
+                <span class="day">Friday</span>
+                <div>
+                    <span class="temp">26°</span>
+                    <img src="img/sun.svg" alt="" class="weather-img">
+                </div>
+            </li>                 
+        </ul>
     </div>
     
 </body>
