@@ -5,6 +5,9 @@ window.addEventListener('load', ()=> {
     let temperatureSelector = document.querySelector(".temperature");
     let locationSelector = document.querySelector(".location");
 
+    let temp = document.querySelectorAll(".temp");
+    let day = document.querySelectorAll(".day");
+    let weatherImg = document.querySelectorAll(".weather-img");
 
     let week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let date = new Date();
@@ -30,13 +33,12 @@ window.addEventListener('load', ()=> {
             })
             .then(data => {
 
-                temperatureDegree.textContent = temp;
-                temperatureDescription.textContent = description;
-                locationTimeZone.textContent = data.timezone;
-                weatherIcon.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+                console.log(data);
 
-                let celcius = Math.round((temp - 273.15) * 100) / 100;
-                let fahrenheit = Math.round((temp * 9/5 - 459.67) * 100) / 100;
+                /* Today's Forecast */
+                temperatureSelector.textContent = Math.round(data.data[0].temp) + "°";
+                descriptionSelector.textContent = data.data[0].weather.description;
+                locationSelector.textContent = data.city_name;
 
 
                 /* Five Days Forecast */
@@ -52,9 +54,6 @@ window.addEventListener('load', ()=> {
                 day.forEach(function(element) {
                     element.textContent = week[i++%7];
                 });
-
-                
-
             });
     }
 
