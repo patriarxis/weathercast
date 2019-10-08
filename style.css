@@ -25,7 +25,7 @@ html, body {
 
 body {
     position: relative;
-    background: rgb(255, 216, 190);
+    background-image: url('img/clear-day.svg');
 }
 
 
