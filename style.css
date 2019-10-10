@@ -26,39 +26,49 @@ html, body {
 body {
     position: relative;
     background-image: url('img/clear-day.svg');
+    background-position: center;
+    background-size: cover;
 }
 
 
 /* Settings */
-#settings-btn {
+.settings {
+    display: grid;
+    grid-template-rows: 10% 90%;
     position: relative;
     top: 5%;
-    left: 75%;
-    transform: translate(-50%, -50%);
+    left: 65%;
+
+    height: 400px;
+    width: 300px;
+}
+
+#settings-btn {
+    justify-self: end;
+    margin-right: 20px;
+
+    position: relative;
+    z-index: 5;
 
     height: 30px;
     width: 30px;
     cursor: pointer;
 }
 
-.settings {
+.dropdown {
     display: none;
     grid-template-rows: 25% 75%;
     place-items: center;
 
     position: relative;
-    top: 5%;
-    left: 63%;
     z-index: 5;
 
-    width: 250px;
-    height: 400px;
-    background-color: rgb(255, 216, 190);
-    box-shadow: 0 0 100px rgba(141, 64, 12, 0.2);
-}
-
-.enable {
-    display: grid;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 0 80px rgba(141, 64, 12, 0.6);
+    border-radius: 10px;
+    color: brown;
 }
 
 #scale {
@@ -73,6 +83,10 @@ body {
     background-color: rgb(255, 188, 140);
     border-radius: 5px;
     color: white;
+}
+
+#scale button.active {
+    background-color: rgb(224, 149, 96);
 }
 
 #backgrounds {
@@ -98,6 +112,28 @@ body {
     width: 50px;
     height: 25px;
 }
+
+.close-dropdown {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+    background: rgba(129, 50, 5, 0.2);
+}
+
+.show-grid {
+    display: grid;
+}
+
+.show-block {
+    display: block;
+}
+
+
 
 
 .forecast {

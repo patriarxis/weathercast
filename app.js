@@ -1,9 +1,12 @@
 window.addEventListener('load', ()=> {
     let lon;
     let lat;
+
     let descriptionSelector = document.querySelector(".description");
     let temperatureSelector = document.querySelector(".temperature");
     let locationSelector = document.querySelector(".location");
+    
+    let fiveDayTemps = new Array(5);
 
     let temp = document.querySelectorAll(".temp");
     let day = document.querySelectorAll(".day");
@@ -14,12 +17,15 @@ window.addEventListener('load', ()=> {
     let currentDay = date.getDay();
 
 
+
+    
     /* Users Location */
     if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
     } else {
         alert("Geolocation is not supported by this browser.");
     }
+
 
     function geoSuccess(position) {
         lon = position.coords.longitude;
@@ -35,27 +41,30 @@ window.addEventListener('load', ()=> {
 
                 console.log(data);
 
-                /* Today's Forecast */
-                temperatureSelector.textContent = Math.round(data.data[0].temp) + "°";
+                /* Today's forecast and location */
                 descriptionSelector.textContent = data.data[0].weather.description;
                 locationSelector.textContent = data.city_name;
 
 
                 /* Five Days Forecast */
                 /* Get temp for the next five days */
-                var i = 1;
+                var i = 0;
                 temp.forEach(function(element) {
-                    element.textContent = Math.round(data.data[i++].temp) + "°";
+                    fiveDayTemps[i] = data.data[i++].temp;
                 });
 
+                /* Apply temperatures */
+                updateTemps();
 
-                /* Get current and four upcoming days */
+
+                /* Get current day and four upcoming days */
                 i = currentDay;
                 day.forEach(function(element) {
                     element.textContent = week[i++%7];
                 });
             });
     }
+
 
     function geoError(error) {
         switch(error.code) {
@@ -74,9 +83,77 @@ window.addEventListener('load', ()=> {
         }
     }
 
+
     
-    /* Elements clicked */
-    document.getElementById("settings-btn").addEventListener('click', function() {
-        document.querySelector(".settings").classList.toggle("enable");
+    /* Settings dropdown menu */
+    var dropdown = document.querySelector(".dropdown");
+    var openDropdown = document.getElementById("settings-btn");
+    var closeDropdown = document.querySelector(".close-dropdown"); // Background div that tracks when user clicks away from dropdown
+
+    /* When settings button is clicked show/hide dropdown and closeDropdown */
+    openDropdown.addEventListener('click', function() {
+        dropdown.classList.toggle("show-grid");
+        closeDropdown.classList.toggle("show-block");
     });
+
+    /* When user clicks away from dropdown hide both dropdown and closeDropdown */
+    closeDropdown.addEventListener('click', function() {
+        dropdown.classList.remove("show-grid");
+        closeDropdown.classList.remove("show-block");
+    });
+
+
+
+
+    let scale = document.querySelector(".active");
+    var buttons = document.querySelectorAll("#scale > button");
+    var previous = 0;
+
+    /* Celcius */
+    buttons[0].addEventListener('click', function() {
+        selectScale(0);
+    });
+    /* Fahrenheit */
+    buttons[1].addEventListener('click', function() {
+        selectScale(1);
+    });
+    /* Kelvin */
+    buttons[2].addEventListener('click', function() {
+        selectScale(2);
+    });
+
+
+    /* User select temp scale */
+    function selectScale(current) { 
+        buttons[previous].classList.remove('active');
+        buttons[current].classList.add('active');
+        previous = current;
+
+        scale = document.querySelector(".active");
+
+        updateTemps();
+    }
+
+
+    /* Update and apply temps */
+    function updateTemps() {
+        temperatureSelector.textContent = tempScale(fiveDayTemps[0] , scale.id);
+
+        var i = 0;
+        temp.forEach(function(element) {
+            element.textContent = tempScale(fiveDayTemps[i++], scale.id);
+        });
+    }
+
+
+    /* Calculate temp scale */
+    function tempScale(temp, sc) {
+        if (sc == "celcius") {
+            return Math.round(temp) + "°";
+        } else if (sc == "fahrenheit") {
+            return Math.round((temp * 9/5) + 32) + "°";
+        } else {
+            return Math.round(temp + 273.15) + "K";
+        }
+    }
 });
