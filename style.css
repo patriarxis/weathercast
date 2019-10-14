@@ -44,9 +44,13 @@ html, body {
     user-select: none;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 body {
     display: grid;
-    grid-template-rows: 50% 80px auto 50px;
+    grid-template-rows: 50% 50px auto 50px;
 
     position: relative;
     background-image: url('img/clear-day.svg');
@@ -106,37 +110,39 @@ body {
     color: brown;
 }
 
-#scale {
+#system {
     display: grid;
-    grid-template-columns: 35% auto auto auto;
+    grid-template-columns: 30% auto auto;
     align-items: center;
 
     width: 80%;
 }
 
-#scale button {
-    justify-self: end;
+#system button {
+    justify-self: center;
 
-    width: 40px;
+    width: 70px;
     height: 30px;
 
-    background-color: rgb(255, 188, 140);
-    border-radius: 5px;
+    background-color: rgba(255, 188, 140, 0.6);
+    border-radius: 7px;
+
     color: white;
+    font-size: 0.85rem;
 
     transition: .2s ease;
 }
 
-#scale button:hover {
-    background-color: rgba(253, 196, 156, 0.8);
+#system button:hover {
+    background-color: rgba(255, 188, 140, 0.8);
 }
 
-#scale button:active {
-    background-color: rgb(224, 149, 96);
+#system button:active {
+    background-color: rgb(255, 188, 140);
 }
 
-#scale button.active {
-    background-color: rgb(224, 149, 96);
+#system button.active {
+    background-color: rgb(255, 188, 140);
 }
 
 #backgrounds {
@@ -355,6 +361,12 @@ body {
     grid-row-gap: 20px;
 
     justify-self: end;
+}
+
+.humidity-wind img {
+    justify-self: end;
+
+    height: 100%;
 }
 
 .humidity {

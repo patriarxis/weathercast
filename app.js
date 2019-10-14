@@ -7,15 +7,24 @@ window.addEventListener('load', ()=> {
     let locationSelector = document.querySelector(".location");
     
     let fiveDayTemps = new Array(5);
+    let fiveDayMaxTemps = new Array(5);
+    let fiveDayMinTemps = new Array(5);
+    let fiveDayWind = new Array(5);
 
+    let fiveDays = document.querySelectorAll(".details > span");
+    let description = document.querySelectorAll(".details h4");
     let temp = document.querySelectorAll(".temp");
     let day = document.querySelectorAll(".day");
     let weatherImg = document.querySelectorAll(".weather-img");
+    let maxTemp = document.querySelectorAll(".max-temp");
+    let minTemp = document.querySelectorAll(".min-temp");
+    let humidity = document.querySelectorAll(".humidity");
+    let arrow = document.querySelectorAll(".humidity-wind img");
+    let wind = document.querySelectorAll(".wind");
 
     let week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let date = new Date();
-    let currentDay = date.getDay();
-
+    let today = new Date();
+    let dayName = today.getDay();
 
 
     
@@ -43,24 +52,50 @@ window.addEventListener('load', ()=> {
 
                 /* Today's forecast and location */
                 descriptionSelector.textContent = data.data[0].weather.description;
-                locationSelector.textContent = data.city_name;
+                locationSelector.textContent = data.city_name + ', ' + data.country_code;
 
 
-                /* Five Days Forecast */
-                /* Get temp for the next five days */
-                var i = 0;
-                temp.forEach(function(element) {
-                    fiveDayTemps[i] = data.data[i++].temp;
-                });
+                /* Get forecast for the next five days */
+                var i;
+                for(i=0; i<5; i++) {
+                    description[i].textContent = data.data[i].weather.description;
+                    fiveDayTemps[i] = data.data[i].temp;
+                    fiveDayMaxTemps[i] = data.data[i].max_temp;
+                    fiveDayMinTemps[i] = data.data[i].min_temp;
+                    humidity[i].textContent = data.data[i].rh + '%';
+                    fiveDayWind[i] = data.data[i].wind_spd;
+                }
 
-                /* Apply temperatures */
-                updateTemps();
+                /* Apply info */
+                update();
 
 
                 /* Get current day and four upcoming days */
-                i = currentDay;
+                i = dayName;
                 day.forEach(function(element) {
                     element.textContent = week[i++%7];
+                });
+
+                var dd, mm, yyyy, date;
+
+                i = 0;
+                fiveDays.forEach(function(element) {
+                    date = data.data[i++].datetime;
+                    dd = date.substring(8,10);
+                    mm = date.substring(5,7);
+                    yyyy = date.substring(0,4);
+                    element.textContent = dd + '.' + mm + '.' + yyyy;
+                });
+
+
+                /* Wind direction in degrees */
+                var direction;
+
+                i = 0;
+                arrow.forEach(function(element) {
+                    direction = data.data[i++].wind_dir;
+                    element.style.transform = "rotate(" + direction + "deg)";
+                    element.setAttribute('alt', direction + ' degrees');
                 });
             });
     }
@@ -185,55 +220,75 @@ window.addEventListener('load', ()=> {
 
 
 
-    let scale = document.querySelector(".active");
-    var buttons = document.querySelectorAll("#scale > button");
-    var previous = 0;
+    let system = document.querySelector(".active");
+    var buttons = document.querySelectorAll("#system > button");
 
-    /* Celcius */
+    /* Metric */
     buttons[0].addEventListener('click', function() {
-        selectScale(0);
+        buttons[0].classList.add('active');
+        buttons[1].classList.remove('active');
+        selectSystem();
     });
-    /* Fahrenheit */
+    /* Imperial */
     buttons[1].addEventListener('click', function() {
-        selectScale(1);
-    });
-    /* Kelvin */
-    buttons[2].addEventListener('click', function() {
-        selectScale(2);
+        buttons[0].classList.remove('active');
+        buttons[1].classList.add('active');
+        selectSystem();
     });
 
-
-    /* User select temp scale */
-    function selectScale(current) { 
-        buttons[previous].classList.remove('active');
-        buttons[current].classList.add('active');
-        previous = current;
-
-        scale = document.querySelector(".active");
-
-        updateTemps();
+    /* User select system measurement */
+    function selectSystem() { 
+        system = document.querySelector(".active");
+        update();
     }
 
 
-    /* Update and apply temps */
-    function updateTemps() {
-        temperatureSelector.textContent = tempScale(fiveDayTemps[0] , scale.id);
+    /* Update and apply temps and speed */
+    function update() {
+        temperatureSelector.textContent = tempSystem(fiveDayTemps[0] , system.id);
 
-        var i = 0;
+        i = 0;
         temp.forEach(function(element) {
-            element.textContent = tempScale(fiveDayTemps[i++], scale.id);
+            element.textContent = tempSystem(fiveDayTemps[i++], system.id);
+        });
+
+        i = 0;
+        maxTemp.forEach(function(element) {
+            element.textContent = tempSystem(fiveDayMaxTemps[i++], system.id);
+        });
+
+        i = 0;
+        minTemp.forEach(function(element) {
+            element.textContent = tempSystem(fiveDayMinTemps[i++], system.id);
+        });
+
+        i = 0;
+        wind.forEach(function(element) {
+            element.textContent = speedSystem(fiveDayWind[i++], system.id);
         });
     }
 
 
-    /* Calculate temp scale */
-    function tempScale(temp, sc) {
-        if (sc == "celcius") {
+    /* Calculate temp system */
+    function tempSystem(temp, sc) {
+        if (sc == "metric") {
             return Math.round(temp) + "°";
-        } else if (sc == "fahrenheit") {
-            return Math.round((temp * 9/5) + 32) + "°";
         } else {
-            return Math.round(temp + 273.15) + "K";
+            return Math.round((temp * 9/5) + 32) + "°";
         }
+    }
+
+    function speedSystem(speed, sc) {
+        if (sc == "metric") {
+            return Math.round(speed * 3.6) + " km/h";
+        } else {
+            return Math.round((speed * 3.6) / 1.609) + " mph";
+        }
+    }
+
+    var body = document.querySelector("body");
+
+    if (today.getHours() < 6 || today.getHours() > 20) {
+        body.style.backgroundImage = "url('img/clear-night.svg')";
     }
 });
