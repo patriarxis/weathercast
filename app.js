@@ -10,6 +10,7 @@ window.addEventListener('load', ()=> {
     let fiveDayMaxTemps = new Array(5);
     let fiveDayMinTemps = new Array(5);
     let fiveDayWind = new Array(5);
+    let weatherCode = new Array(5);
 
     let fiveDays = document.querySelectorAll(".details > span");
     let description = document.querySelectorAll(".details h4");
@@ -64,6 +65,7 @@ window.addEventListener('load', ()=> {
                     fiveDayMinTemps[i] = data.data[i].min_temp;
                     humidity[i].textContent = data.data[i].rh + '%';
                     fiveDayWind[i] = data.data[i].wind_spd;
+                    weatherCode[i] = data.data[i].weather.code;
                 }
 
                 /* Apply info */
@@ -86,6 +88,9 @@ window.addEventListener('load', ()=> {
                     yyyy = date.substring(0,4);
                     element.textContent = dd + '.' + mm + '.' + yyyy;
                 });
+
+                /* Apply weather icons */
+                applyWeatherImg(weatherCode);
 
 
                 /* Wind direction in degrees */
@@ -198,13 +203,47 @@ window.addEventListener('load', ()=> {
             details[4].classList.toggle("show-details");
         }, delay);
     });
+
+
+
+
+    function applyWeatherImg(weatherCode) {
+        let imgName;
+        var i = 0;
+        weatherImg.forEach(function (element) {
+            switch(weatherCode[i++]) {
+                case 500:
+                    imgName = "light-rain";
+                    break;
+                case 800:
+                    imgName = "clear-sky";
+                    break;
+                case 801:
+                    imgName = "few-clouds";
+                    break;
+                case 802:
+                    imgName = "scattered-clouds";
+                    break;
+                case 803:
+                    imgName = "broken-clouds";
+                    break;
+                case 804:
+                    imgName = "overcast-clouds";
+                    break;
+                default:
+                    imgName = "unknown";
+            }
+
+            element.src = "img/weather-images/" + imgName + ".svg";
+        });
+    }
     
 
     
     /* Settings dropdown menu */
-    var dropdown = document.querySelector(".dropdown");
-    var openDropdown = document.getElementById("settings-btn");
-    var closeDropdown = document.querySelector(".close-dropdown"); // Background div that tracks when user clicks away from dropdown
+    let dropdown = document.querySelector(".dropdown");
+    let openDropdown = document.getElementById("settings-btn");
+    let closeDropdown = document.querySelector(".close-dropdown"); // Background div that tracks when user clicks away from dropdown
 
     /* When settings button is clicked show/hide dropdown and closeDropdown */
     openDropdown.addEventListener('click', function() {
@@ -216,24 +255,48 @@ window.addEventListener('load', ()=> {
     closeDropdown.addEventListener('click', function() {
         dropdown.classList.remove("show-grid");
         closeDropdown.classList.remove("show-block");
+        applyCloseDropdown();
     });
 
 
 
+
+    /* Change background image */
+    let body = document.querySelector("body");
+    let changeBackground = document.querySelectorAll("#backgrounds div");
+
+    changeBackground[0].addEventListener('click', function() {
+        body.style.backgroundImage = "url('img/backgrounds/clear-day.svg')";
+        applyCloseDropdown();
+    });
+    changeBackground[1].addEventListener('click', function() {
+        body.style.backgroundImage = "url('img/backgrounds/clouds-day.svg')";
+        applyCloseDropdown();
+    });
+    changeBackground[2].addEventListener('click', function() {
+        body.style.backgroundImage = "url('img/backgrounds/rain-day.svg')";
+        applyCloseDropdown();
+    });
+
+
+
+
     let system = document.querySelector(".active");
-    var buttons = document.querySelectorAll("#system > button");
+    let buttons = document.querySelectorAll("#system > button");
 
     /* Metric */
     buttons[0].addEventListener('click', function() {
         buttons[0].classList.add('active');
         buttons[1].classList.remove('active');
         selectSystem();
+        applyCloseDropdown();
     });
     /* Imperial */
     buttons[1].addEventListener('click', function() {
         buttons[0].classList.remove('active');
         buttons[1].classList.add('active');
         selectSystem();
+        applyCloseDropdown();
     });
 
     /* User select system measurement */
@@ -241,6 +304,17 @@ window.addEventListener('load', ()=> {
         system = document.querySelector(".active");
         update();
     }
+
+
+
+    function applyCloseDropdown() {
+        dropdown.classList.remove("show-grid");
+        closeDropdown.classList.remove("show-block");
+    }
+
+
+
+
 
 
     /* Update and apply temps and speed */
@@ -286,9 +360,14 @@ window.addEventListener('load', ()=> {
         }
     }
 
-    var body = document.querySelector("body");
+    /* let body = document.querySelector("body");
 
     if (today.getHours() < 6 || today.getHours() > 20) {
         body.style.backgroundImage = "url('img/clear-night.svg')";
-    }
+        body.style.backgroundColor = "#2A3276";
+
+        dropdown.style.color = "rgb(14, 24, 113)";
+        dropdown.style.boxShadow = "0 0 80px rgba(12, 27, 141, 0.6)";
+        closeDropdown.style.backgroundColor = "rgba(4, 34, 102, 0.4)";
+    } */
 });
