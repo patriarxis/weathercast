@@ -279,15 +279,15 @@ window.addEventListener('load', ()=> {
     let changeBackground = document.querySelectorAll("#backgrounds div");
 
     changeBackground[0].addEventListener('click', function() {
-        body.style.backgroundImage = "url('img/backgrounds/clear-day.svg')";
+        body.style.backgroundImage = "url('img/backgrounds/clear.svg')";
         applyCloseDropdown();
     });
     changeBackground[1].addEventListener('click', function() {
-        body.style.backgroundImage = "url('img/backgrounds/clouds-day.svg')";
+        body.style.backgroundImage = "url('img/backgrounds/clouds.svg')";
         applyCloseDropdown();
     });
     changeBackground[2].addEventListener('click', function() {
-        body.style.backgroundImage = "url('img/backgrounds/rain-day.svg')";
+        body.style.backgroundImage = "url('img/backgrounds/rain.svg')";
         applyCloseDropdown();
     });
 
