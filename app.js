@@ -91,6 +91,7 @@ window.addEventListener('load', ()=> {
 
                 /* Apply weather icons */
                 applyWeatherImg(weatherCode);
+                applyBackground(weatherCode[0]);
 
 
                 /* Wind direction in degrees */
@@ -237,6 +238,18 @@ window.addEventListener('load', ()=> {
             element.src = "img/weather-images/" + imgName + ".svg";
         });
     }
+
+    function applyBackground(todaysWeatherCode){
+        let backgroundName;
+        if (todaysWeatherCode == 500) {
+            backgroundName = "rain";
+        } else if (todaysWeatherCode == 800) {
+            backgroundName = "clear";
+        } else {
+            backgroundName = "clouds";
+        }
+        body.style.backgroundImage = "url(img/backgrounds/" + backgroundName + ".svg)";
+    }
     
 
     
@@ -346,9 +359,9 @@ window.addEventListener('load', ()=> {
     /* Calculate temp system */
     function tempSystem(temp, sc) {
         if (sc == "metric") {
-            return Math.round(temp) + "°";
+            return Math.round(temp) + "°C";
         } else {
-            return Math.round((temp * 9/5) + 32) + "°";
+            return Math.round((temp * 9/5) + 32) + "°F";
         }
     }
 
